@@ -1,24 +1,15 @@
-const express = require("express");
-const http = require("http");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const compression = require("compression");
-const cors = require("cors");
+import express, { Express, Request, Response } from "express";
+import dotenv from "dotenv";
 
-const app = express();
+dotenv.config();
 
-app.use(
-  cors({
-    credential: true,
-  })
-);
+const app: Express = express();
+const port = process.env.PORT || 3000;
 
-app.use(compression());
-app.use(cookieParser());
-app.use(bodyParser.json());
+app.get("/", (req: Request, res: Response) => {
+  res.send("Express + TypeScript Server");
+});
 
-const server = http.createServer(app);
-
-server.listen(8080, () => {
-  console.log("Server running on http://localhost:8080");
+app.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
 });
