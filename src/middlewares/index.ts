@@ -29,3 +29,28 @@ export const isAuthenticated = async (
     return res.status(400);
   }
 };
+
+export const isOwner = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const currentUserId = get(req, "identity._id");
+
+    if (!currentUserId) {
+      return res.status(403).json({ msg: "Invalid identity" });
+    }
+
+    console.log({ currentUserId, id });
+    if ((currentUserId as string).toString() !== id) {
+      return res.status(403).json({ msg: "Invalid identity" });
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+};
